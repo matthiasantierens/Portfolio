@@ -51,7 +51,7 @@
 
   <!-- Page Header -->
   <!-- Set your background image for this header on the line below. -->
-  <header class="intro-header" style="background-image: url('img/ausy/lebateau.jpeg')">
+  <header class="intro-header" style="background-image: url('img/raspberry.jpg')">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -92,99 +92,97 @@
           <p>Eens de sdkaart geflashed is, voeg dan in het bootmapje een bestand toe met de naam ssh.
             Dit zal zorgen dat je bij de eerste boot kan verbinden met ssh. Zo Hoef je geen extern scherm te gebruiken. (ik doe dit op linux, dus dit zal er anders uitzien in windows of mac) </p>
 
-          <img src="img/tutorial/sshOnBoot.png" alt="sshOnBoot" title="sshOnBoot">
+          <img class="container" src="img/tutorial/sshOnBoot.png" alt="sshOnBoot" title="sshOnBoot">
 
           <p>Eens dit gelukt is, steek de sdkaart in de pi, verbind de pi met een router/switch aan de hand van een ethernet kabel en steek de pi aan.</p>
 
-          <p>Wacht 2 min. Nu moet de pi vindbaar zijn op het netwerk. De pi is het makkelijkste vindbaar met de tool nmap. Je kan met deze tool het thuisnetwerk scannen achter toestellen met poort 22 open. Deze poort staat voor ssh. `nmap -p22
-            192.168.0.0./24`.</p>
+          <p>Wacht 2 min. Nu moet de pi vindbaar zijn op het netwerk. De pi is het makkelijkste vindbaar met de tool nmap. Je kan met deze tool het thuisnetwerk scannen achter toestellen met poort 22 open. Deze poort staat voor ssh. <strong>`nmap -p22
+            192.168.0.0./24`</strong>.</p>
 
           <p>Als dit comando niet goed werkt, dan kan je de pi ook vinden aan de hand van een andere nmap scan.</p>
 
-          <p>`sudo nmap -O 192.168.0.0/24` vervang sudo door de administrator in cmd op windows. (run cmd as administrator)</p>
+          <p><strong>`sudo nmap -O 192.168.0.0/24`</strong> vervang sudo door de administrator in cmd op windows. (run cmd as administrator)</p>
 
-          <img src="img/tutorial/nmapScan.png" alt="nmapScan" title="nmapScan">
+          <img class="container" src="img/tutorial/nmapScan.png" alt="nmapScan" title="nmapScan">
 
-          <p>Bij mij heeft de pi het ip adress 192.168.0.150, dus nu kunnen we verbinden aan de hand van het volgende commando: ssh pi@192.168.0.150. Het standaard wachtwoord is raspberry.
+          <p>Bij mij heeft de pi het ip adress 192.168.0.150, dus nu kunnen we verbinden aan de hand van het volgende commando: <strong>ssh pi@192.168.0.150</strong>. Het standaard wachtwoord is raspberry.</p>
 
-            Ten eerste zullen we een update doen van de pi. Dit zal echter niet lang duren. Een pi hoeft ook niet te rebooten na een update. sudo apt-get update && sudo apt-get upgrade. Hierna zullen we zorgen dat ssh altijd aanstaat, want nu is deze
+            <p>Ten eerste zullen we een update doen van de pi. Dit zal echter niet lang duren. Een pi hoeft ook niet te rebooten na een update. <strong>sudo apt-get update && sudo apt-get upgrade</strong>. Hierna zullen we zorgen dat ssh altijd aanstaat, want nu is deze
             enkel aan voor deze sessie, een de pi reboot is deze weg.
-            sudo systemctl enable sshd && sudo systemctl enable ssh. Dit zorgt dat de pi opstart me ssh aan.
+            <strong>sudo systemctl enable sshd && sudo systemctl enable ssh</strong>. Dit zorgt dat de pi opstart me ssh aan.</p>
 
-            We zullen nu eerst de landcode van de pi in orde brengen. Doe dit aan de hand van sudo raspi-config.
-            Ga dan In dit menu naar localisation en kies dan change wifi country. Duid daar België aan.
+            <p>We zullen nu eerst de landcode van de pi in orde brengen. Doe dit aan de hand van <strong>sudo raspi-config</strong>.
+            Ga dan In dit menu naar <strong>localisation</strong> en kies dan <strong>change wifi country</strong>. Duid daar België aan.</p>
 
-            Het is ook best practise en zeker aangeraden om het wachtwoord van de pi te veranderen. Dit is een must als je de pi wilt open zetten door bepaalde poorten te forwarden. sudo passwd pi.
+            <p>Het is ook best practise en zeker aangeraden om het wachtwoord van de pi te veranderen. Dit is een must als je de pi wilt open zetten door bepaalde poorten te forwarden. <strong>sudo passwd pi</strong>.</p>
 
-            We zullen de pi tenslotte een statisch ip geven voor op het thuisnetwerk. Zo hoef je niet telkens nmap te gebruiken om de pi te vinden op het netwerk.
+            <p>We zullen de pi tenslotte een statisch ip geven voor op het thuisnetwerk. Zo hoef je niet telkens nmap te gebruiken om de pi te vinden op het netwerk.</p>
 
-            Voeg onderstaande lijnen toe aan de hand van sudo nano /etc/dhcpcd.conf.
+            <p>Voeg onderstaande lijnen toe aan de hand van <strong>sudo nano /etc/dhcpcd.conf</strong>.</p>
+            <div class="container">
+              <p>interface eth0</p>
 
-            `
+              <p>static ip_address=192.168.0.151/24</p>
 
-            interface eth0
+              <p>static routers=192.168.0.1</p>
 
-            static ip_address=192.168.0.151/24
+              <p>static domain_name_servers=192.168.0.1</p>
 
-            static routers=192.168.0.1
+            </div>
 
-            static domain_name_servers=192.168.0.1
+            <p>  Met deze lijnen toegevoegd, zal de pi vindbaar zijn onder het adres 192.168.0.151. Dit adres mag zelf gekozen worden, maar het moet tussen 192.168.0.1 – 192.168.0.254 liggen en het moet nog beschikbaar zijn. Test deze configuratie door de
+            pi te rebooten. (sudo reboot)</p>
 
-            `
-
-            Met deze lijnen toegevoegd, zal de pi vindbaar zijn onder het adres 192.168.0.151. Dit adres mag zelf gekozen worden, maar het moet tussen 192.168.0.1 – 192.168.0.254 liggen en het moet nog beschikbaar zijn. Test deze configuratie door de
-            pi te rebooten. (sudo reboot)
-
-            normaal kan je nu door ssh pi@192.168.0.151 uit te voeren in cmd verbinden met de pi met uw nieuw ingesteld wachtwoord. </p>
+            <p>normaal kan je nu door ssh pi@192.168.0.151 uit te voeren in cmd verbinden met de pi met uw nieuw ingesteld wachtwoord. </p>
 
           <h3>2 Beveiliging</h3>
 
-          <p>Dit is erg belangrijk als je de pi wilt gebruiken in een andere locatie dan thuis.
+          <p>Dit is erg belangrijk als je de pi wilt gebruiken in een andere locatie dan thuis.</p>
 
-            Momenteel kan de gebruiker inloggen met zijn eigen gekozen wachtwoord. Dit is al iets veiliger dan wat we vooraf hadden, maar nog niet foolproof. Je kan echter inloggen zonder wachtwoord, maar met keys die gemaakt worden door uw pc. Dit
+            <p>Momenteel kan de gebruiker inloggen met zijn eigen gekozen wachtwoord. Dit is al iets veiliger dan wat we vooraf hadden, maar nog niet foolproof. Je kan echter inloggen zonder wachtwoord, maar met keys die gemaakt worden door uw pc. Dit
             is bijna onmogelijk om te kraken. We zullen ook fail2ban installeren, die zorgt dat tussen elke inlogpoging een vertraging zit en naar 3 mislukte pogingen, moet de aanvaller 10 minuten wachten voordat hij weer kan inloggen. Dus een
-            combinatie van de keys en fail2ban is een must.
+            combinatie van de keys en fail2ban is een must.</p>
 
-            Fail2ban is echter de makkelijkste om in orde te krijgen. Dit kan door 1 command uit te voeren sudo apt install fail2ban. That’s it.
+            <p>Fail2ban is echter de makkelijkste om in orde te krijgen. Dit kan door 1 command uit te voeren sudo apt install fail2ban. That’s it.</p>
 
-            Om de keys in orde te krijgen, zullen we commando’s moeten uitvoeren op de pi en op de pc die wilt verbinden met de pi. Voer op beide machines het volgende commando uit: ssh-keygen(werkt op linux, windows en mac). Door dit commando uit te
+            <p>Om de keys in orde te krijgen, zullen we commando’s moeten uitvoeren op de pi en op de pc die wilt verbinden met de pi. Voer op beide machines het volgende commando uit: ssh-keygen(werkt op linux, windows en mac). Door dit commando uit te
             voeren, zal de pi en de verbonden pc elk 2 sleutels maken. Een publieke sleutel en een private sleutel. Door wiskundige combinaties te maken bij het verbindt proces, is dit echter bijna onmogelijk om te kraken. Dus zoek op uw pc uw
-            publieke sleutel en steek die op de pi in het bestand .ssh/authorized_keys. Door dit toe te voegen, kan u nu normaal inloggen zonder wachtwoord.
+            publieke sleutel en steek die op de pi in het bestand .ssh/authorized_keys. Door dit toe te voegen, kan u nu normaal inloggen zonder wachtwoord.</p>
 
-            Voer enkel deze onderstaande stappen uit als de vorige beveilingsstappen werken, anders zal je niet meer kunnen verbinden met ssh.
+            <p>Voer enkel deze onderstaande stappen uit als de vorige beveilingsstappen werken, anders zal je niet meer kunnen verbinden met ssh.</p>
 
-            Verander in dit bestand /etc/ssh/sshd_config de optie #PasswordAuthentication yes naar PasswordAuthentication no. Dit zal zorgen dat er geen paswoorden meer toegelaten zijn.
+            <p>Verander in dit bestand /etc/ssh/sshd_config de optie #PasswordAuthentication yes naar PasswordAuthentication no. Dit zal zorgen dat er geen paswoorden meer toegelaten zijn.</p>
 
-            Tot zover beveiliging. Nu kan de pi veiliger gebruikt worden. </p>
+            <p>Tot zover beveiliging. Nu kan de pi veiliger gebruikt worden. </p>
 
           <h3>3 Router/access point</h3>
 
           <p>Nu werkt de pi al perfect voor intern gebruik, maar dat willen we niet. We willen de pi overaan in een powerbank kunnen steken en er dan mee verbinden aan de hand van een eigen gemaakte wifi netwerk.
 
-            Voor daarom onderstaande commando’s uit:
+            <p>Voor daarom onderstaande commando’s uit:</p>
 
-            sudo apt install dnsmasq hostapd
+            <p>sudo apt install dnsmasq hostapd</p>
 
-            sudo systemctl stop dnsmasq
+            <p>sudo systemctl stop dnsmasq</p>
 
-            sudo systemctl stop hostapd
+            <p>sudo systemctl stop hostapd</p>
 
-            sudo nano /etc/dhcpcd.conf
+            <p>sudo nano /etc/dhcpcd.conf</p>
 
-            Voeg in dit bestand volledig onderaan onderstaande lijnen toe:
+            <p>Voeg in dit bestand volledig onderaan onderstaande lijnen toe:</p>
 
-            interface wlan0
+            <p>interface wlan0</p>
 
-            static ip_address=192.168.4.1/24
+            <p>static ip_address=192.168.4.1/24</p>
 
-            nohook wpa_supplicant
+            <p>nohook wpa_supplicant</p>
 
-            Dit zorgt dat alle toestellen die verbinden met de pi, de pi kunnen vinden op dit ip. De ip’s die de pi zal uitgeven, zullen ook in het 192.168.4.1 bereik zitten.
+            <p>Dit zorgt dat alle toestellen die verbinden met de pi, de pi kunnen vinden op dit ip. De ip’s die de pi zal uitgeven, zullen ook in het 192.168.4.1 bereik zitten.</p>
 
-            Om deze file zijn configuratie toe te passen, voer volgend commando uit:
-            sudo service dhcpcd restart
+            <p>Om deze file zijn configuratie toe te passen, voer volgend commando uit:</p>
+            sudo service dhcpcd restart</p>
 
-            We zullen nu de dhcp range instellen. Voer volgende commando’s uit:
+            <p>We zullen nu de dhcp range instellen. Voer volgende commando’s uit:
 
             sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
             sudo nano /etc/dnsmasq.conf
@@ -192,51 +190,52 @@
             Voeg in dit bestand onderstaande lijnen toe:
 
             interface=wlan0 # Use the require wireless interface - usually wlan0
-            dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+            dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h</p>
 
 
 
-            Start dan de dnsmasq service:
+            <p>Start dan de dnsmasq service:
 
-            sudo systemctl start dnsmasq
+            <strong>sudo systemctl start dnsmasq</strong>
 
             In de volgende stap, zullen we de access point configuren. Voer volgende commando’s uit:
 
-            sudo nano /etc/hostapd/hostapd.conf
+            <strong>sudo nano /etc/hostapd/hostapd.conf</strong>
 
-            In dit bestand plakken we volgende lijnen:
+            In dit bestand plakken we volgende lijnen:</p>
 
-            `
+            <div class="container">
+              <strong>
 
-            interface=wlan0
+            <p>interface=wlan0</p>
 
-            driver=nl80211
+            <p>driver=nl80211</p>
 
-            ssid=NaamVanNetwerk
+            <p>ssid=NaamVanNetwerk</p>
 
-            hw_mode=g
+            <p>hw_mode=g</p>
 
-            channel=7
+            <p>channel=7</p>
 
-            wmm_enabled=0
+            <p>wmm_enabled=0</p>
 
-            macaddr_acl=0
+            <p>macaddr_acl=0</p>
 
-            auth_algs=1
+            <p>auth_algs=1</p>
 
-            ignore_broadcast_ssid=0
+            <p>ignore_broadcast_ssid=0</p>
 
-            wpa=2
+            <p>wpa=2</p>
 
-            wpa_passphrase=PasswoordVanNetwerk
+            <p>wpa_passphrase=PasswoordVanNetwerk</p>
 
-            wpa_key_mgmt=WPA-PSK
+            <p>wpa_key_mgmt=WPA-PSK</p>
 
-            wpa_pairwise=TKIP
+            <p>wpa_pairwise=TKIP</p>
 
-            rsn_pairwise=CCMP
-
-            `
+            <p>rsn_pairwise=CCMP</p>
+</strong>
+            </div>
 
             We moeten in volgende configuratiebestand verwijzen naar het bestand dat we net aangepast hebben. sudo nano /etc/default/hostapd
 
@@ -270,38 +269,42 @@
 
               <h3>4 Het installeren van de leuke tooltjes</h3>
 
-              <p>Nu komen we in het leuke deel, waar we eindelijk de tools kunnen installeren voor het mediastreamen. Ik hou het graag simpel en licht. Het is tenslotte maar een klein boordcomputertje.
+              <p>Nu komen we in het leuke deel, waar we eindelijk de tools kunnen installeren voor het mediastreamen. Ik hou het graag simpel en licht. Het is tenslotte maar een klein boordcomputertje.</p>
 
-                Ik raad aan voor een samba op te zetten. Dan kan je gewoon de bestanden die je wilt streamen kopiëren en plakken zoals op een simpele usb.
+                <p>Ik raad aan voor een samba op te zetten. Dan kan je gewoon de bestanden die je wilt streamen kopiëren en plakken zoals op een simpele usb.
 
                 Dus door het uitvoeren van de volgende commando’s, hebben we alle programma’s die we uiteindelijk nodig hebben. sudo apt install samba minidlna. Ik ben persoon fan van de minidlna, want hiermee kan je makkelijk media vanop je pi delen
-                aan de hand van het upnp protocol. Uiteindelijk zal je aan de media geraken met een app zoals vlc. Ik raad persoonlijk vlc aan, want dit werkt op elk platform.
+                aan de hand van het upnp protocol. Uiteindelijk zal je aan de media geraken met een app zoals vlc. Ik raad persoonlijk vlc aan, want dit werkt op elk platform.</p>
 
-                Ik vind het het makkelijkst om 1 map te delen en daar alles in de zetten. Dit is ook iets beter qua veiligheid. Dus ik ga een map media maken in de homefolder aan de hand van mkdir media.
+                <p>Ik vind het het makkelijkst om 1 map te delen en daar alles in de zetten. Dit is ook iets beter qua veiligheid. Dus ik ga een map media maken in de homefolder aan de hand van mkdir media.
 
-                Voeg dan in de samba conf (sudo nano /etc/samba/smb.conf) volgdende lijnen toe:
+                Voeg dan in de samba conf (<strong>sudo nano /etc/samba/smb.conf</strong>) volgdende lijnen toe:</p>
 
-                `
+                <div class="container">
+                    <strong>
+                  <p>[files]</p>
 
-                [files]
+                  <p>path =/home/pi/media</p>
 
-                path =/home/pi/media
+                  <p>valid users = pi</p>
 
-                valid users = pi
+                  <p>read only = no</p>
 
-                read only = no
+                  <p>writeable = yes</p>
+                </strong>
+                </div>
 
-                writeable = yes
 
-                `
 
-                Om de user pi een sambapasswoord te geven: smbpasswd -a pi.
 
-                Nu kan je vanuit windows, lunix of mac rechtstreeks verbinden vanuit de file explorer en zo bestanden toevoegen aan de map media.
 
-                Als laatste stap moeten we nog minidlna configuren. Dit doen we in aan de hand van sudo nano /etc/minidlna.conf. En voeg deze lijn toe (media_dir=V,/home/pi/media)in op de plaats zoals in de screenshot.</p>
+                <p>Om de user pi een sambapasswoord te geven: smbpasswd -a pi.
 
-                <img src="img/tutorial/config.png" alt="config" title="config">
+                Nu kan je vanuit windows, lunix of mac rechtstreeks verbinden vanuit de file explorer en zo bestanden toevoegen aan de map media.</p>
+
+                <p>Als laatste stap moeten we nog minidlna configuren. Dit doen we in aan de hand van sudo nano /etc/minidlna.conf. En voeg deze lijn toe (media_dir=V,/home/pi/media)in op de plaats zoals in de screenshot.</p>
+
+                <img  class="container"src="img/tutorial/config.png" alt="config" title="config">
 
                 <p>Ik hoop dat deze tutorial duidelijk was en de pi nog iets leuker maakt. </p>
 
