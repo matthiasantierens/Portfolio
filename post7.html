@@ -70,7 +70,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-          <p>Deze tutorial zal stap voor stap beschrijven hoe je de perfecte travel companion zal maken met een raspberry pi. Het uiteindelijke doel is een draagbare streaming box waarmee er muziek, video's en foto’s kan gestreamd worden. Deze pi kan
+          <p>In deze tutorial zal stap voor stap beschrijven hoe je de perfecte travel companion zal maken met een raspberry pi. Het uiteindelijke doel is een draagbare streaming box waarmee er muziek, video's en foto’s kan gestreamd worden. Deze pi kan
             ook aangesloten worden op het thuisnetwerk zodat je deze functies ook thuis kan gebruiken. </p>
 
           <h3>Benodigheden</h3>
@@ -87,7 +87,7 @@
           <p>Flashen van raspian lite op een sdkaart. Raspberry heeft recent hun eigen flashing tool uitgebracht die dit proces nog makkelijker maakt. Download op de volgende link de image flasher voor uw operating system.
             <a href="https://www.raspberrypi.org/downloads/">https://www.raspberrypi.org/downloads/</a> . Flash dan raspbian lite en wacht tot dit proces gedaan is. </p>
 
-          <img src="img/tutorial/piFlasher.png" alt="pi image flasher" title="pi Image flasher">
+          <img  class="container"src="img/tutorial/piFlasher.png" alt="pi image flasher" title="pi Image flasher">
 
           <p>Eens de sdkaart geflashed is, voeg dan in het bootmapje een bestand toe met de naam ssh.
             Dit zal zorgen dat je bij de eerste boot kan verbinden met ssh. Zo Hoef je geen extern scherm te gebruiken. (ik doe dit op linux, dus dit zal er anders uitzien in windows of mac) </p>
@@ -160,24 +160,36 @@
           <p>Nu werkt de pi al perfect voor intern gebruik, maar dat willen we niet. We willen de pi overaan in een powerbank kunnen steken en er dan mee verbinden aan de hand van een eigen gemaakte wifi netwerk.
 
             <p>Voor daarom onderstaande commando’s uit:</p>
+            <div class="container">
+              <strong>
+              <p>sudo apt install dnsmasq hostapd</p>
 
-            <p>sudo apt install dnsmasq hostapd</p>
+              <p>sudo systemctl stop dnsmasq</p>
 
-            <p>sudo systemctl stop dnsmasq</p>
+              <p>sudo systemctl stop hostapd</p></strong>
 
-            <p>sudo systemctl stop hostapd</p>
+            </div>
 
-            <p>sudo nano /etc/dhcpcd.conf</p>
 
-            <p>Voeg in dit bestand volledig onderaan onderstaande lijnen toe:</p>
 
-            <p>interface wlan0</p>
+            <p><strong>sudo nano /etc/dhcpcd.conf</strong></p>
 
-            <p>static ip_address=192.168.4.1/24</p>
+            <p>Voeg in dit bestand onderaan onderstaande lijnen toe:</p>
 
-            <p>nohook wpa_supplicant</p>
+            <div class="container">
+              <strong>
+                <p>interface wlan0</p>
 
-            <p>Dit zorgt dat alle toestellen die verbinden met de pi, de pi kunnen vinden op dit ip. De ip’s die de pi zal uitgeven, zullen ook in het 192.168.4.1 bereik zitten.</p>
+                <p>static ip_address=192.168.4.1/24</p>
+
+                <p>nohook wpa_supplicant</p>
+              </strong>
+
+            </div>
+
+
+
+            <p>Dit zorgt dat alle toestellen die verbinden met de pi, de pi kunnen vinden op dit ip. De ip’s die de pi zal uitgeven(in latere stappen), zullen ook in het 192.168.4.1 bereik zitten.</p>
 
             <p>Om deze file zijn configuratie toe te passen, voer volgend commando uit:</p>
             sudo service dhcpcd restart</p>
